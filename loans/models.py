@@ -34,17 +34,38 @@ class Loan(models.Model):
     duration_in_months = models.PositiveSmallIntegerField(blank=True,
                                                           null=True,)
     requested_principal = models.DecimalField(max_digits=5, decimal_places=0,)
-    interest_rate = models.FloatField(max_length=3)
+    interest_rate = models.DecimalField(max_digits=5, decimal_places=2,)
     status = models.CharField(max_length=1, default=LoanState.New)
     emi = models.DecimalField(max_digits=5, decimal_places=0, default=0)
+
+    def calculate_emi(self):
+        """ Individuals can calculate personal loan EMI by using the following formula -
+            E = P * r * (1+r) ^n / ((1+r) ^n-1)
+            Here,
+                E denotes the EMI amount.
+                P gives the principal or loan amount applied for.
+                r is the applicable rate of interest, calculate on a per month basis.
+                n denotes loan tenure.
+        """
+        P = self.requested_principal
+        r = self.interest_rate / 12
+        n = self.duration_in_months
+        return (P * r * (1 + r) ** n) // ((1 + r) ** n - 1)
+
+    def set_emi(self):
+        self.emi = self.calculate_emi()
+        self.save()
+        return self
 
     def mark_approved(self):
         self.status = LoanState.Approved
         self.save()
+        return self
 
     def mark_rejected(self):
         self.status = LoanState.Rejected
         self.save()
+        return self
 
     @property
     def is_editable(self):
