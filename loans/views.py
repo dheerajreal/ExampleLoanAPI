@@ -18,7 +18,10 @@ class MyLoansListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
-        return Loan.get_all_loans().filter(beneficiary=self.request.user)
+        if self.request.user.is_authenticated:
+            return Loan.get_all_loans().filter(beneficiary=self.request.user)
+        else:
+            return None
 
 
 class AllLoansListView(generics.ListAPIView):
