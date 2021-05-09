@@ -9,6 +9,7 @@ djangorestframework = "*"
 gunicorn = "*"
 psycopg2 = "*"
 django-filter = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 flake8 = "*"
