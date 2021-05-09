@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
+    "loans",
     'rest_framework',
 ]
 
@@ -52,7 +53,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'core.urls'
-AUTH_USER_MODEL = 'accounts.SiteUser'  
+AUTH_USER_MODEL = 'accounts.SiteUser'
 
 TEMPLATES = [
     {
