@@ -8,6 +8,7 @@ django = "*"
 djangorestframework = "*"
 gunicorn = "*"
 psycopg2 = "*"
+django-filter = "*"
 
 [dev-packages]
 flake8 = "*"

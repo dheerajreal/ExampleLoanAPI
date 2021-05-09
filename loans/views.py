@@ -1,3 +1,6 @@
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter
+
 from rest_framework import generics
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import get_object_or_404
@@ -47,6 +50,20 @@ class LoanCreateView(generics.ListCreateAPIView):
     queryset = Loan.objects.all()
     serializer_class = LoanSerializer
     permission_classes = [IsAuthenticated, AdminPermission | AgentPermission]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = [
+        "status",
+        "beneficiary",
+        "agent",
+        "admin",
+    ]
+    ordering_fields = [
+        "requested_datetime",
+        "edited_datetime",
+        "requested_principal",
+        "emi"
+    ]
+    ordering = ["pk"]
 
     def perform_create(self, serializer):
         serializer.save(agent=self.request.user)
