@@ -31,16 +31,28 @@ class LoanObjectTests(TestCase):
             agent=self.demoagent
         )
 
-    def test_loan_create_api_endpoint_access(self):
-        response = self.client.get(reverse("loan_create"))
-        self.assertEqual(response.status_code, 403)  # before login
-        self.client.login(username="demoadmin", password="password")
-        response = self.client.get(reverse("loan_create"))
-        self.assertEqual(response.status_code, 200)  # after login
-
     def test_loan_create(self):
         self.assertEqual(939, round(self.demoloan.calculate_emi()))
         self.assertEqual(self.demoloan.emi, self.demoloan.calculate_emi())
         self.assertEqual(self.demoloan.status, "N")
         self.assertEqual(self.demoloan.agent, self.demoagent)
         self.assertEqual(self.demoloan.beneficiary, self.demobeneficiary)
+
+    def test_loan_approve(self):
+        self.assertTrue(self.demoloan.is_editable)
+        self.demoloan.mark_approved()
+        self.assertFalse(self.demoloan.is_editable)
+        self.assertEqual(self.demoloan.status, "A")
+
+    def test_loan_reject(self):
+        self.assertTrue(self.demoloan.is_editable)
+        self.demoloan.mark_rejected()
+        self.assertTrue(self.demoloan.is_editable)
+        self.assertEqual(self.demoloan.status, "R")
+
+    def test_loan_create_api_endpoint_access(self):
+        response = self.client.get(reverse("loan_create"))
+        self.assertEqual(response.status_code, 403)  # before login
+        self.client.login(username="demoadmin", password="password")
+        response = self.client.get(reverse("loan_create"))
+        self.assertEqual(response.status_code, 200)  # after login
