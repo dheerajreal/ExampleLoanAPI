@@ -26,7 +26,7 @@ class LoanUpdateView(generics.RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated, ExclusivelyAgentPermission]
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated, AdminPermission])
 def loan_approve_view(request, pk):
     loan_object = get_object_or_404(Loan.get_non_approved_loans(), pk=pk)
