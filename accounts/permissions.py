@@ -2,7 +2,7 @@ from rest_framework import permissions
 
 
 class AdminPermission(permissions.BasePermission):
-    message = "User is not an admin"
+    message = "User is not an admin or tech staff"
 
     def has_permission(self, request, view):
         # is_staff and is_superuser is for superuser and site maintainers
@@ -10,7 +10,7 @@ class AdminPermission(permissions.BasePermission):
 
 
 class AgentPermission(permissions.BasePermission):
-    message = "User is not an agent"
+    message = "User is not an agent or admin"
 
     def has_permission(self, request, view):
         return request.user.is_admin or request.user.is_agent

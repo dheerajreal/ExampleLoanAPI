@@ -58,7 +58,6 @@ class Loan(models.Model):
         P = self.requested_principal
         r = self.interest_rate / (12 * 100)  # interest rate per month
         n = self.duration_in_months
-        print(P, r, n)
         return P * r * (((1 + r) ** n) / (((1 + r) ** n) - 1))
 
     def mark_approved(self):
