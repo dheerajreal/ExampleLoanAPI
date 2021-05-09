@@ -14,6 +14,7 @@ from .serializers import LoanSerializer
 
 
 class MyLoansListView(generics.ListAPIView):
+    """Loans for a specific beneficiary user"""
     serializer_class = LoanSerializer
     permission_classes = [IsAuthenticated, ]
 
@@ -25,30 +26,41 @@ class MyLoansListView(generics.ListAPIView):
 
 
 class AllLoansListView(generics.ListAPIView):
+    """All loans,
+    can be used only by admins, agents and staff"""
     queryset = Loan.get_all_loans()
     serializer_class = LoanSerializer
     permission_classes = [IsAuthenticated, AdminPermission | AgentPermission]
 
 
 class RejectedLoansListView(generics.ListAPIView):
+    """Rejected loans,
+    can be used only by admins, agents and staff"""
     queryset = Loan.get_rejected_loans()
     serializer_class = LoanSerializer
     permission_classes = [IsAuthenticated, AdminPermission | AgentPermission]
 
 
 class ApprovedLoansListView(generics.ListAPIView):
+    """Approved loans,
+    can be used only by admins, agents and staff"""
     queryset = Loan.get_approved_loans()
     serializer_class = LoanSerializer
     permission_classes = [IsAuthenticated, AdminPermission | AgentPermission]
 
 
 class NewRequestedLoansListView(generics.ListAPIView):
+    """Loan requests that have't been accepted or rejected yet,
+    can be used only by admins, agents and staff"""
     queryset = Loan.get_new_requested_loans()
     serializer_class = LoanSerializer
     permission_classes = [IsAuthenticated, AdminPermission | AgentPermission]
 
 
 class LoanCreateView(generics.ListCreateAPIView):
+    """Create new Loan requests,
+    See loans with filtering and ordering options,
+    can be used only by admins, agents and staff"""
     queryset = Loan.objects.all()
     serializer_class = LoanSerializer
     permission_classes = [IsAuthenticated, AdminPermission | AgentPermission]
@@ -72,6 +84,8 @@ class LoanCreateView(generics.ListCreateAPIView):
 
 
 class LoanUpdateView(generics.RetrieveUpdateAPIView):
+    """Update a specific loan,
+    can be used only by agents"""
     queryset = Loan.get_non_approved_loans()
     serializer_class = LoanSerializer
     permission_classes = [IsAuthenticated, ExclusivelyAgentPermission]
@@ -80,6 +94,7 @@ class LoanUpdateView(generics.RetrieveUpdateAPIView):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, AdminPermission])
 def loan_approve_view(request, pk):
+    """Approve loans, Admin or staff only"""
     loan_object = get_object_or_404(Loan.get_non_approved_loans(), pk=pk)
     loan_object.admin = request.user
     loan_object = loan_object.mark_approved()

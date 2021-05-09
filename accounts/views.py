@@ -9,12 +9,16 @@ User = get_user_model()
 
 
 class UsersListCreateView(generics.ListCreateAPIView):
+    """Create and list users,
+    can be used only by admins, agents and staff"""
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated, AdminPermission | AgentPermission]
 
 
 class UsersRUView(generics.RetrieveUpdateAPIView):
+    """Edit and view details about user,
+    can be used only by admins, agents and staff"""
     queryset = User.objects.all()
     serializer_class = UserUpdateSerializer
     permission_classes = [IsAuthenticated, AdminPermission | AgentPermission]
