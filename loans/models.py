@@ -12,7 +12,7 @@ class LoanState:
 class Loan(models.Model):
     beneficiary = models.ForeignKey(
         User,
-        blank=True,
+        blank=False,
         null=True,
         on_delete=models.SET_NULL,
         related_name="beneficiary"
@@ -31,12 +31,27 @@ class Loan(models.Model):
         on_delete=models.SET_NULL,
         related_name="admin"
     )
-    duration_in_months = models.PositiveSmallIntegerField(blank=True,
-                                                          null=True,)
-    requested_principal = models.DecimalField(max_digits=5, decimal_places=0,)
-    interest_rate = models.DecimalField(max_digits=5, decimal_places=2,)
-    status = models.CharField(max_length=1, default=LoanState.New)
-    emi = models.DecimalField(max_digits=5, decimal_places=0, default=0)
+    duration_in_months = models.PositiveSmallIntegerField(
+        blank=True,
+        null=True,
+    )
+    requested_principal = models.DecimalField(
+        max_digits=5,
+        decimal_places=0,
+    )
+    interest_rate = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+    )
+    status = models.CharField(
+        max_length=1,
+        default=LoanState.New
+    )
+    emi = models.DecimalField(
+        max_digits=5,
+        decimal_places=0,
+        default=0
+    )
 
     def save(self, *args, **kwargs):
         self.emi = self.calculate_emi()

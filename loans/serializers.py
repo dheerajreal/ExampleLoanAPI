@@ -5,6 +5,10 @@ User = get_user_model()
 
 
 class LoanSerializer(serializers.ModelSerializer):
+    beneficiary = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(),
+        required=True
+    )
 
     class Meta:
         model = Loan
