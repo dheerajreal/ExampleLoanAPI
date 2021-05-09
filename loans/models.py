@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+# from django.utils import timezone
 
 User = get_user_model()
 
@@ -52,6 +53,14 @@ class Loan(models.Model):
         max_digits=5,
         decimal_places=0,
         default=0
+    )
+    requested_datetime = models.DateTimeField(
+        auto_now_add=True,
+        # default=timezone.now
+    )
+    edited_datetime = models.DateTimeField(
+        auto_now=True,
+        # default=timezone.now
     )
 
     def save(self, *args, **kwargs):
