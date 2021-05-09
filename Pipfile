@@ -11,6 +11,7 @@ psycopg2 = "*"
 django-filter = "*"
 djangorestframework-simplejwt = "*"
 drf-yasg = "*"
+python-decouple = "*"
 
 [dev-packages]
 flake8 = "*"
