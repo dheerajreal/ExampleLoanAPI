@@ -1,11 +1,14 @@
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.response import Response
-from .serializers import LoanSerializer
-from .models import Loan
-from accounts.permissions import AgentPermission, AdminPermission, ExclusivelyAgentPermission
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+from accounts.permissions import (AdminPermission, AgentPermission,
+                                  ExclusivelyAgentPermission)
+
+from .models import Loan
+from .serializers import LoanSerializer
 
 
 class LoanCreateView(generics.ListCreateAPIView):

@@ -1,8 +1,9 @@
-from .permissions import AdminPermission, AgentPermission
-from rest_framework import generics
-from .serializers import UserSerializer, UserUpdateSerializer
 from django.contrib.auth import get_user_model
+from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+
+from .permissions import AdminPermission, AgentPermission
+from .serializers import UserSerializer, UserUpdateSerializer
 
 User = get_user_model()
 
