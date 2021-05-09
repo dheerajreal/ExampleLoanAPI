@@ -38,6 +38,10 @@ class Loan(models.Model):
     status = models.CharField(max_length=1, default=LoanState.New)
     emi = models.DecimalField(max_digits=5, decimal_places=0, default=0)
 
+    def save(self, *args, **kwargs):
+        self.emi = self.calculate_emi()
+        return super().save(*args, **kwargs)
+
     def calculate_emi(self):
         """ Individuals can calculate personal loan EMI by using the following formula -
             E = P * r * (1+r) ^n / ((1+r) ^n-1)
@@ -46,16 +50,16 @@ class Loan(models.Model):
                 P gives the principal or loan amount applied for.
                 r is the applicable rate of interest, calculate on a per month basis.
                 n denotes loan tenure.
+
+            references:
+                https://emicalculator.net/
+                https://www.icicibank.com/calculator/personal-loan-emi-calculator.page
         """
         P = self.requested_principal
-        r = self.interest_rate / 12
+        r = self.interest_rate / (12 * 100)  # interest rate per month
         n = self.duration_in_months
-        return (P * r * (1 + r) ** n) // ((1 + r) ** n - 1)
-
-    def set_emi(self):
-        self.emi = self.calculate_emi()
-        self.save()
-        return self
+        print(P, r, n)
+        return P * r * (((1 + r) ** n) / (((1 + r) ** n) - 1))
 
     def mark_approved(self):
         self.status = LoanState.Approved
