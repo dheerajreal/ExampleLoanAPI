@@ -12,6 +12,7 @@ django-filter = "*"
 djangorestframework-simplejwt = "*"
 drf-yasg = "*"
 python-decouple = "*"
+whitenoise = "*"
 
 [dev-packages]
 flake8 = "*"
