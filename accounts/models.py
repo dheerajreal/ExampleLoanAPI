@@ -9,6 +9,7 @@ class SiteUser(AbstractUser):
 
     class Meta:
         db_table = "site_user_accounts"
+        ordering = ["pk"]
 
     def __str__(self):
         return self.username

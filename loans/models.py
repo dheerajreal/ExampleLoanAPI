@@ -119,3 +119,6 @@ class Loan(models.Model):
     @classmethod
     def get_non_approved_loans(cls):
         return cls.objects.exclude(status=LoanState.Approved)
+    
+    class Meta:
+        ordering = ["pk"]
