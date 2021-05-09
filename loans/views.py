@@ -11,6 +11,38 @@ from .models import Loan
 from .serializers import LoanSerializer
 
 
+class MyLoansListView(generics.ListAPIView):
+    serializer_class = LoanSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def get_queryset(self):
+        return Loan.get_all_loans().filter(beneficiary=self.request.user)
+
+
+class AllLoansListView(generics.ListAPIView):
+    queryset = Loan.get_all_loans()
+    serializer_class = LoanSerializer
+    permission_classes = [IsAuthenticated, AdminPermission | AgentPermission]
+
+
+class RejectedLoansListView(generics.ListAPIView):
+    queryset = Loan.get_rejected_loans()
+    serializer_class = LoanSerializer
+    permission_classes = [IsAuthenticated, AdminPermission | AgentPermission]
+
+
+class ApprovedLoansListView(generics.ListAPIView):
+    queryset = Loan.get_approved_loans()
+    serializer_class = LoanSerializer
+    permission_classes = [IsAuthenticated, AdminPermission | AgentPermission]
+
+
+class NewRequestedLoansListView(generics.ListAPIView):
+    queryset = Loan.get_new_requested_loans()
+    serializer_class = LoanSerializer
+    permission_classes = [IsAuthenticated, AdminPermission | AgentPermission]
+
+
 class LoanCreateView(generics.ListCreateAPIView):
     queryset = Loan.objects.all()
     serializer_class = LoanSerializer
