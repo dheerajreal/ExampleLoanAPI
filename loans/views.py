@@ -5,7 +5,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
+from rest_framework.exceptions import PermissionDenied
 from accounts.permissions import (AdminPermission, AgentPermission,
                                   ExclusivelyAgentPermission)
 
@@ -95,7 +95,9 @@ class LoanUpdateView(generics.RetrieveUpdateAPIView):
 @permission_classes([IsAuthenticated, AdminPermission])
 def loan_approve_view(request, pk):
     """Approve loans, Admin or staff only"""
-    loan_object = get_object_or_404(Loan.get_non_approved_loans(), pk=pk)
+    loan_object = get_object_or_404(Loan, pk=pk)
+    if not loan_object.is_editable:
+        raise PermissionDenied("already approved")
     loan_object.admin = request.user
     loan_object = loan_object.mark_approved()
     return Response(LoanSerializer(loan_object).data)
