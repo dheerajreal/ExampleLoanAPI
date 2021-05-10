@@ -24,4 +24,6 @@ use this superuser account to create admins
 
 ## run with postgres
 
-run the docker container with environment variables needed to connect to postgres(look at .env.example).
+by default this app runs on sqlite3 database inside the container filesystem,
+you can also run the docker container with postgreSQL,
+add the environment variables needed to connect to postgres(look at .env.example).
