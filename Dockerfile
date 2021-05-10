@@ -26,7 +26,7 @@ ADD . .
 
 RUN ./manage.py collectstatic --no-input
 
-RUN ./manage.py test  # run tests
+RUN pytest  # run tests
 
 ENTRYPOINT [ "python3" ]
 
