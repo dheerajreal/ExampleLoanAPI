@@ -30,6 +30,8 @@ by default this app runs on sqlite3 database inside the container filesystem,
 you can also run the docker container with postgreSQL,
 add the environment variables needed to connect to postgres(look at .env.example).
 
+> docker run -it --name loancontainer --network=host --env-file ./.env.example -p 8080:8080 loantest ./manage.py runserver
+
 ## run without docker
 
 To run locally setup the dependencies in your virtualenvironment by

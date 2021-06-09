@@ -1,4 +1,4 @@
-FROM python:alpine
+FROM python:3.8-alpine 
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -10,13 +10,12 @@ WORKDIR /app
 EXPOSE 8080
 
 # psycopg2 for postgres
-RUN apk add --no-cache --virtual .build-deps \
+RUN apk add --no-cache \
     gcc \
     python3-dev \
     musl-dev \
     postgresql-dev \
-    && pip install --no-cache-dir psycopg2 \
-    && apk del --no-cache .build-deps   
+    && pip3 install --no-cache-dir psycopg2 psycopg2-binary  
 
 COPY ./requirements.txt .
 
