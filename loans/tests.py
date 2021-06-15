@@ -57,3 +57,45 @@ class LoanObjectTests(TestCase):
         self.client.login(username="demoadmin", password="password")
         response = self.client.get(reverse("loan_create"))
         self.assertEqual(response.status_code, 200)  # after login
+
+    def test_admin_list_create_users(self):
+        self.client.login(username="demoadmin", password="password")
+        response = self.client.post(
+            reverse("user_list_create"),
+            data={
+                "username": "foo",
+                "password": "bar",
+                "first_name": "f",
+                "last_name": "l",
+                "email": "foo@bar.baz",
+            }
+        )
+        self.assertEqual(response.status_code, 201)
+        response = self.client.get(
+            reverse("user_list_create"),
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_admin_approve_loan(self):
+        self.assertTrue(Loan.objects.first().is_editable)
+        self.client.login(username="demoadmin", password="password")
+        response = self.client.post(reverse("loan_approve", kwargs={"pk": 1}))
+        self.assertEqual(response.status_code, 200)
+
+        self.assertFalse(Loan.objects.first().is_editable)
+        self.assertEqual(Loan.objects.first().status, "A")
+        response = self.client.post(reverse("loan_approve", kwargs={"pk": 1}))
+        self.assertEqual(response.status_code, 403)
+
+    def test_my_loans_view(self):
+        self.client.login(username="demoadmin", password="password")
+        response = self.client.get(reverse("list_loan_mine"))
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(
+            response.content, {
+                'count': 0,
+                'next': None,
+                'previous': None,
+                'results': []
+            }
+        )
