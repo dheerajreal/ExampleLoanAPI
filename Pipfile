@@ -13,6 +13,7 @@ djangorestframework-simplejwt = "*"
 drf-yasg = "*"
 python-decouple = "*"
 whitenoise = "*"
+coverage = "*"
 
 [dev-packages]
 flake8 = "*"
