@@ -19,5 +19,12 @@ jobs:
         with:
           python-version: "3.8"
           architecture: "x64"
-      - run: pip install -r requirements.txt
-      - run: coverage erase && coverage run ./manage.py test && coverage report
+
+      - name: flake8 Linter
+        run: pip install flake8 && flake8 --statistics --count
+
+      - name: Install requirements
+        run: pip install -r requirements.txt
+
+      - name: test and coverage
+        run: coverage erase && coverage run ./manage.py test && coverage report
